@@ -1,9 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  output: "export",
-  distDir: "dist"
+const nextConfig = {
+  reactStrictMode: true
 };
 
 export default nextConfig;

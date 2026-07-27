@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
 import "./globals.css";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "V3 Ajans | Operasyon Paneli",
   description: "V3 Ajans iş ve organizasyon yönetim paneli"
 };

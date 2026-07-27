@@ -1,5 +1,6 @@
 .next
 dist
+.vinext
 node_modules
 *.log
 *.tsbuildinfo
