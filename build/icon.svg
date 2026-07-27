@@ -1,0 +1,23 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="background" x1="120" y1="88" x2="904" y2="936" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#173A30"/>
+      <stop offset="1" stop-color="#0C211B"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="278" y1="210" x2="742" y2="818" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF7142"/>
+      <stop offset="1" stop-color="#E94516"/>
+    </linearGradient>
+    <filter id="shadow" x="170" y="150" width="700" height="720" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="24" dy="28" stdDeviation="12" flood-color="#07140F" flood-opacity=".36"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="232" fill="url(#background)"/>
+  <path d="M164 760L864 160" stroke="#FFFFFF" stroke-opacity=".05" stroke-width="82"/>
+  <g filter="url(#shadow)">
+    <path d="M270 196H704C750 196 782 234 776 280L715 744C710 789 671 824 626 824H318C272 824 240 786 246 740L307 276C312 231 351 196 396 196H270Z" fill="url(#accent)"/>
+  </g>
+  <text x="507" y="607" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="274" font-weight="900" text-anchor="middle" letter-spacing="-26">V3</text>
+  <circle cx="795" cy="784" r="57" fill="#2ED58C"/>
+  <path d="M769 784L789 804L824 765" fill="none" stroke="#0C211B" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

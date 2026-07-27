@@ -1,6 +1,7 @@
-# V3 Ajans Operasyon Paneli
+# V3 Ajans Masaüstü Uygulaması
 
-V3 Ajans'ın farklı iş alanlarının modüller halinde yönetilebilmesi için hazırlanan operasyon paneli.
+V3 Ajans'ın farklı iş alanlarının modüller halinde yönetilebilmesi için hazırlanan
+macOS ve Windows masaüstü uygulaması.
 
 İlk modül Veteranlar Ligi yönetimidir:
 
@@ -10,19 +11,28 @@ V3 Ajans'ın farklı iş alanlarının modüller halinde yönetilebilmesi için 
 - Sonuçlardan otomatik hesaplanan puan tablosu
 - Takım ve oyuncu bazlı sarı/kırmızı kart kaydı
 - Fair play sıralaması
-- Yerel veri saklama ve JSON dışa aktarma
+- Uygulama içinde kalıcı veri saklama ve JSON dışa aktarma
 
-## Yerel çalıştırma
+## Geliştirme
 
 ```bash
 npm install
 npm run dev
 ```
 
+## Masaüstü paketleri
+
+```bash
+npm run dist:mac
+npm run dist:win
+```
+
+Oluşturulan kurulum dosyaları `release/` klasörüne yazılır.
+
 ## Kontroller
 
 ```bash
 npm run lint
 npm run build
-node tests/smoke.mjs
+npm run test:desktop
 ```

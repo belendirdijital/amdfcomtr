@@ -25,7 +25,6 @@
     "incremental": true
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],
@@ -33,6 +32,8 @@
     "node_modules",
     ".next",
     ".vinext",
-    "dist"
+    "dist",
+    "dist-renderer",
+    "release"
   ]
 }

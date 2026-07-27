@@ -1,6 +1,8 @@
 .next
 dist
 .vinext
+dist-renderer
+release
 node_modules
 *.log
 *.tsbuildinfo
