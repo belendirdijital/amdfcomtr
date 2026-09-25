@@ -10,7 +10,8 @@ const LINKS = [
   { href: "/fixtures", label: "Fikstür" },
   { href: "/scorers", label: "Gol Kralı" },
   { href: "/fairplay", label: "Fair Play" },
-  { href: "/teams", label: "Takımlar" }
+  { href: "/teams", label: "Takımlar" },
+  { href: "/documents", label: "Belgeler" }
 ];
 
 export default function SiteHeader() {

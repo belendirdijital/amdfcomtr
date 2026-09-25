@@ -4161,3 +4161,80 @@ button.agency-module-card {
     transform: none;
   }
 }
+
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--soft-line);
+  border-radius: 12px;
+  background: var(--paper);
+}
+
+.doc-item__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--orange);
+  background: rgba(240, 90, 40, 0.08);
+}
+
+.doc-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-item__body strong {
+  display: block;
+  font-size: 15px;
+  letter-spacing: -0.2px;
+}
+
+.doc-item__body p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.doc-item__body small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  opacity: 0.85;
+}
+
+.doc-item .button {
+  flex: none;
+  text-decoration: none;
+}
+
+.doc-item .button[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .doc-item {
+    flex-wrap: wrap;
+  }
+
+  .doc-item .button {
+    width: 100%;
+  }
+}
