@@ -23,17 +23,41 @@ export type LocalStore = {
 const DATA_DIR = path.join(process.cwd(), "data");
 const STORE_PATH = path.join(DATA_DIR, "store.json");
 
+function emptyData(): LeagueData {
+  return {
+    teams: [],
+    matches: [],
+    goals: [],
+    cards: [],
+    licenses: []
+  };
+}
+
+function defaultAdminAccount(): LocalAccount {
+  return {
+    id: "local-admin",
+    email: process.env.AMDF_ADMIN_EMAIL || "admin@amdf.local",
+    password: process.env.AMDF_ADMIN_PASSWORD || "admin123",
+    role: "admin",
+    teamId: null
+  };
+}
+
+/** Demo seed only when AMDF_SEED_DEMO=1 (local testing). Production stays empty. */
 function defaultStore(): LocalStore {
+  const useSeed = process.env.AMDF_SEED_DEMO === "1";
+
+  if (!useSeed) {
+    return {
+      data: emptyData(),
+      accounts: [defaultAdminAccount()]
+    };
+  }
+
   return {
     data: structuredClone(seedData),
     accounts: [
-      {
-        id: "local-admin",
-        email: "admin@amdf.local",
-        password: "admin123",
-        role: "admin",
-        teamId: null
-      },
+      defaultAdminAccount(),
       {
         id: "local-team-1",
         phone: "05551234567",
@@ -63,7 +87,7 @@ export function readLocalStore(): LocalStore {
         cards: raw.data?.cards || [],
         licenses: raw.data?.licenses || []
       },
-      accounts: Array.isArray(raw.accounts) ? raw.accounts : defaultStore().accounts
+      accounts: Array.isArray(raw.accounts) ? raw.accounts : [defaultAdminAccount()]
     };
   } catch {
     const store = defaultStore();
