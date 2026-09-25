@@ -14,12 +14,10 @@ npm run dev
 Site: [http://localhost:3000](http://localhost:3000)  
 Giriş: [http://localhost:3000/login](http://localhost:3000/login)
 
-| Hesap | Giriş | Şifre |
-|-------|-------|-------|
-| Admin | `admin@amdf.local` | `admin123` |
-| Takım (AMDF Veteranlar) | `05551234567` | `takim123` |
+`.env.local` içinde `AMDF_ADMIN_EMAIL` / `AMDF_ADMIN_PASSWORD` ayarla.  
+Demo seed için: `AMDF_SEED_DEMO=1`
 
-Admin ile giriş → fikstür üret, skor/gol gir, diğer takımlara hesap aç.  
+Admin ile giriş → takım ekle, fikstür üret, skor/gol gir, takım hesapları aç.  
 Takım hesabı ile giriş → sadece kendi oyuncu lisansları.
 
 ## Production: Supabase

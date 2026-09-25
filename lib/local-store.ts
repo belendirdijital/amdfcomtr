@@ -36,8 +36,8 @@ function emptyData(): LeagueData {
 function defaultAdminAccount(): LocalAccount {
   return {
     id: "local-admin",
-    email: process.env.AMDF_ADMIN_EMAIL || "admin@amdf.local",
-    password: process.env.AMDF_ADMIN_PASSWORD || "admin123",
+    email: process.env.AMDF_ADMIN_EMAIL || "admin@amdf.com.tr",
+    password: process.env.AMDF_ADMIN_PASSWORD || "change-me",
     role: "admin",
     teamId: null
   };

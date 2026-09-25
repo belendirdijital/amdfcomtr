@@ -62,7 +62,7 @@ export default function LoginForm() {
             onChange={(event) => setIdentifier(event.target.value)}
             required
             autoComplete="username"
-            placeholder="05xx… veya admin@…"
+            placeholder="05xx… veya e-posta"
           />
         </label>
         <label className="form-field">
