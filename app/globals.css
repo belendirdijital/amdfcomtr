@@ -4270,10 +4270,12 @@ button.agency-module-card {
 
 .hero-slider__slide {
   position: relative;
+  display: block;
   min-height: inherit;
   background-size: cover;
   background-position: center;
   color: #fff;
+  text-decoration: none;
 }
 
 .hero-slider__shade {

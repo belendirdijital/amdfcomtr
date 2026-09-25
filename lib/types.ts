@@ -66,33 +66,20 @@ export type Profile = {
   teamId: string | null;
 };
 
-export type SlideFeature = {
-  title: string;
-  subtitle: string;
-};
-
+/** Anasayfa slider slaytı — yalnızca görsel + link */
 export type SiteSlide = {
   id: string;
-  eyebrow: string;
-  title: string;
-  titleHighlight: string;
-  description: string;
-  ctaLabel: string;
-  ctaHref: string;
   imageUrl: string;
-  features: SlideFeature[];
+  href: string;
   sortOrder: number;
   enabled: boolean;
 };
 
+/** Anasayfa banner — yalnızca görsel + link */
 export type SiteBanner = {
   id: string;
-  category: string;
-  title: string;
-  description: string;
-  buttonLabel: string;
-  href: string;
   imageUrl: string;
+  href: string;
   sortOrder: number;
   enabled: boolean;
 };

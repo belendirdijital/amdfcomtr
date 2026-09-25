@@ -6,7 +6,6 @@ import type {
   Profile,
   SiteBanner,
   SiteSlide,
-  SlideFeature,
   Team,
   UserRole
 } from "./types";
@@ -79,24 +78,25 @@ type ProfileRow = {
 
 type SlideRow = {
   id: string;
-  eyebrow: string;
-  title: string;
-  title_highlight: string;
-  description: string;
-  cta_label: string;
-  cta_href: string;
+  eyebrow?: string;
+  title?: string;
+  title_highlight?: string;
+  description?: string;
+  cta_label?: string;
+  cta_href?: string;
+  href?: string;
   image_url: string;
-  features: SlideFeature[] | null;
+  features?: unknown;
   sort_order: number;
   enabled: boolean;
 };
 
 type BannerRow = {
   id: string;
-  category: string;
-  title: string;
-  description: string;
-  button_label: string;
+  category?: string;
+  title?: string;
+  description?: string;
+  button_label?: string;
   href: string;
   image_url: string;
   sort_order: number;
@@ -251,27 +251,11 @@ export function mapProfile(row: ProfileRow): Profile {
   };
 }
 
-function normalizeFeatures(raw: SlideFeature[] | null | undefined): SlideFeature[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .map((item) => ({
-      title: String(item?.title || "").trim(),
-      subtitle: String(item?.subtitle || "").trim()
-    }))
-    .filter((item) => item.title);
-}
-
 export function mapSlide(row: SlideRow): SiteSlide {
   return {
     id: row.id,
-    eyebrow: row.eyebrow || "",
-    title: row.title,
-    titleHighlight: row.title_highlight || "",
-    description: row.description || "",
-    ctaLabel: row.cta_label || "",
-    ctaHref: row.cta_href || "",
     imageUrl: row.image_url,
-    features: normalizeFeatures(row.features),
+    href: row.cta_href || row.href || "/",
     sortOrder: row.sort_order ?? 0,
     enabled: Boolean(row.enabled)
   };
@@ -280,14 +264,14 @@ export function mapSlide(row: SlideRow): SiteSlide {
 export function toSlideRow(slide: SiteSlide) {
   return {
     id: slide.id,
-    eyebrow: slide.eyebrow || "",
-    title: slide.title,
-    title_highlight: slide.titleHighlight || "",
-    description: slide.description || "",
-    cta_label: slide.ctaLabel || "",
-    cta_href: slide.ctaHref || "",
+    eyebrow: "",
+    title: "",
+    title_highlight: "",
+    description: "",
+    cta_label: "",
+    cta_href: slide.href || "/",
     image_url: slide.imageUrl,
-    features: normalizeFeatures(slide.features),
+    features: [],
     sort_order: slide.sortOrder ?? 0,
     enabled: Boolean(slide.enabled)
   };
@@ -296,12 +280,8 @@ export function toSlideRow(slide: SiteSlide) {
 export function mapBanner(row: BannerRow): SiteBanner {
   return {
     id: row.id,
-    category: row.category || "",
-    title: row.title,
-    description: row.description || "",
-    buttonLabel: row.button_label || "",
-    href: row.href || "",
     imageUrl: row.image_url,
+    href: row.href || "/",
     sortOrder: row.sort_order ?? 0,
     enabled: Boolean(row.enabled)
   };
@@ -310,11 +290,11 @@ export function mapBanner(row: BannerRow): SiteBanner {
 export function toBannerRow(banner: SiteBanner) {
   return {
     id: banner.id,
-    category: banner.category || "",
-    title: banner.title,
-    description: banner.description || "",
-    button_label: banner.buttonLabel || "",
-    href: banner.href || "",
+    category: "",
+    title: "",
+    description: "",
+    button_label: "",
+    href: banner.href || "/",
     image_url: banner.imageUrl,
     sort_order: banner.sortOrder ?? 0,
     enabled: Boolean(banner.enabled)

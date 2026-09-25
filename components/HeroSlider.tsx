@@ -1,25 +1,9 @@
 "use client";
 
-import { ArrowRight, ChevronLeft, ChevronRight, HeartHandshake, Shield, Trophy } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { SiteSlide } from "@/lib/types";
-
-const FEATURE_ICONS = [Trophy, HeartHandshake, Shield];
-
-function renderTitle(title: string, highlight: string) {
-  if (!highlight || !title.includes(highlight)) {
-    return title;
-  }
-  const parts = title.split(highlight);
-  return (
-    <>
-      {parts[0]}
-      <em>{highlight}</em>
-      {parts.slice(1).join(highlight)}
-    </>
-  );
-}
 
 export default function HeroSlider({ slides }: { slides: SiteSlide[] }) {
   const [index, setIndex] = useState(0);
@@ -42,52 +26,23 @@ export default function HeroSlider({ slides }: { slides: SiteSlide[] }) {
 
   return (
     <section className="hero-slider" aria-roledescription="carousel" aria-label="Öne çıkan">
-      <div
+      <Link
+        href={slide.href || "/"}
         className="hero-slider__slide"
         style={{ backgroundImage: `url(${slide.imageUrl})` }}
         key={slide.id}
-      >
-        <div className="hero-slider__shade" aria-hidden="true" />
-        <div className="hero-slider__content">
-          <div className="hero-slider__copy">
-            {slide.eyebrow && <span className="hero-slider__eyebrow">{slide.eyebrow}</span>}
-            <h1>{renderTitle(slide.title, slide.titleHighlight)}</h1>
-            {slide.description && <p>{slide.description}</p>}
-            {slide.ctaLabel && (
-              <Link href={slide.ctaHref || "/"} className="button button--primary hero-slider__cta">
-                {slide.ctaLabel}
-                <ArrowRight size={16} />
-              </Link>
-            )}
-          </div>
-
-          {slide.features.length > 0 && (
-            <ul className="hero-slider__features">
-              {slide.features.map((feature, featureIndex) => {
-                const Icon = FEATURE_ICONS[featureIndex % FEATURE_ICONS.length];
-                return (
-                  <li key={`${feature.title}-${featureIndex}`}>
-                    <span className="hero-slider__feature-icon" aria-hidden="true">
-                      <Icon size={18} strokeWidth={2.2} />
-                    </span>
-                    <span>
-                      <strong>{feature.title}</strong>
-                      {feature.subtitle && <small>{feature.subtitle}</small>}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-      </div>
+        aria-label="Slayt bağlantısı"
+      />
 
       {count > 1 && (
         <>
           <button
             type="button"
             className="hero-slider__nav hero-slider__nav--prev"
-            onClick={() => go(-1)}
+            onClick={(event) => {
+              event.preventDefault();
+              go(-1);
+            }}
             aria-label="Önceki slayt"
           >
             <ChevronLeft size={22} />
@@ -95,7 +50,10 @@ export default function HeroSlider({ slides }: { slides: SiteSlide[] }) {
           <button
             type="button"
             className="hero-slider__nav hero-slider__nav--next"
-            onClick={() => go(1)}
+            onClick={(event) => {
+              event.preventDefault();
+              go(1);
+            }}
             aria-label="Sonraki slayt"
           >
             <ChevronRight size={22} />

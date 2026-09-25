@@ -13,20 +13,10 @@ export default function FeatureBanners({ banners }: { banners: SiteBanner[] }) {
           href={banner.href || "/"}
           className="feature-banner"
           style={{ backgroundImage: `url(${banner.imageUrl})` }}
+          aria-label="Banner bağlantısı"
         >
-          <span className="feature-banner__shade" aria-hidden="true" />
           <span className="feature-banner__arrow" aria-hidden="true">
             <ArrowUpRight size={18} />
-          </span>
-          <span className="feature-banner__body">
-            {banner.category && (
-              <span className="feature-banner__category">{banner.category}</span>
-            )}
-            <strong>{banner.title}</strong>
-            {banner.description && <small>{banner.description}</small>}
-            {banner.buttonLabel && (
-              <span className="feature-banner__cta">{banner.buttonLabel}</span>
-            )}
           </span>
         </Link>
       ))}
