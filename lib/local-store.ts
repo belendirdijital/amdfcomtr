@@ -29,7 +29,9 @@ function emptyData(): LeagueData {
     matches: [],
     goals: [],
     cards: [],
-    licenses: []
+    licenses: [],
+    slides: [],
+    banners: []
   };
 }
 
@@ -85,7 +87,9 @@ export function readLocalStore(): LocalStore {
         matches: raw.data?.matches || [],
         goals: raw.data?.goals || [],
         cards: raw.data?.cards || [],
-        licenses: raw.data?.licenses || []
+        licenses: raw.data?.licenses || [],
+        slides: raw.data?.slides || [],
+        banners: raw.data?.banners || []
       },
       accounts: Array.isArray(raw.accounts) ? raw.accounts : [defaultAdminAccount()]
     };

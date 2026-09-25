@@ -1,5 +1,7 @@
 import Link from "next/link";
+import FeatureBanners from "@/components/FeatureBanners";
 import FixturesList from "@/components/FixturesList";
+import HeroSlider from "@/components/HeroSlider";
 import LeagueMetrics from "@/components/LeagueMetrics";
 import PublicShell from "@/components/PublicShell";
 import ScorersTable from "@/components/ScorersTable";
@@ -15,22 +17,34 @@ import { loadPublicLeagueData } from "@/lib/public-data";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const { data, configured, error } = await loadPublicLeagueData();
+  const { data, error } = await loadPublicLeagueData();
   const standings = getStandings(data.teams, data.matches);
   const scorers = getTopScorers(data.teams, data.goals).slice(0, 5);
   const fairPlay = getCardTotals(data.teams, data.cards).slice(0, 5);
   const upcoming = data.matches.filter((match) => !matchIsPlayed(match)).slice(0, 4);
 
+  const slides = [...(data.slides || [])]
+    .filter((slide) => slide.enabled)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const banners = [...(data.banners || [])]
+    .filter((banner) => banner.enabled)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const hasSlider = slides.length > 0;
+
   return (
     <PublicShell
       title="Veteranlar Ligi"
       description="Puan durumu, fikstür, gol kralı ve fair play — canlı takip. Veriler yalnızca yönetim panelinden güncellenir."
+      showHero={!hasSlider}
     >
       {error && (
         <div className="site-panel" style={{ marginBottom: 18 }}>
           <strong>Veri hatası:</strong> {error}
         </div>
       )}
+
+      {hasSlider && <HeroSlider slides={slides} />}
+      {banners.length > 0 && <FeatureBanners banners={banners} />}
 
       <LeagueMetrics data={data} className="metric-grid--page" />
 

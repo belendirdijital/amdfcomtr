@@ -303,7 +303,9 @@ export const seedData: LeagueData = {
   matches: generateFixtures(seedTeams, true),
   goals: seedGoals,
   cards: seedCards,
-  licenses: []
+  licenses: [],
+  slides: [],
+  banners: []
 };
 
 export function initials(name: string) {

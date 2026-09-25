@@ -66,12 +66,45 @@ export type Profile = {
   teamId: string | null;
 };
 
+export type SlideFeature = {
+  title: string;
+  subtitle: string;
+};
+
+export type SiteSlide = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  titleHighlight: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+  imageUrl: string;
+  features: SlideFeature[];
+  sortOrder: number;
+  enabled: boolean;
+};
+
+export type SiteBanner = {
+  id: string;
+  category: string;
+  title: string;
+  description: string;
+  buttonLabel: string;
+  href: string;
+  imageUrl: string;
+  sortOrder: number;
+  enabled: boolean;
+};
+
 export type LeagueData = {
   teams: Team[];
   matches: Match[];
   goals: MatchGoal[];
   cards: CardRecord[];
   licenses: PlayerLicense[];
+  slides: SiteSlide[];
+  banners: SiteBanner[];
 };
 
 export type StandingRow = {

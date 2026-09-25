@@ -4,21 +4,25 @@ import SiteHeader from "@/components/SiteHeader";
 export default function PublicShell({
   title,
   description,
-  children
+  children,
+  showHero = true
 }: {
   title: string;
   description?: string;
   children: ReactNode;
+  showHero?: boolean;
 }) {
   return (
     <div className="site-shell">
       <SiteHeader />
       <main className="site-main">
-        <section className="site-hero">
-          <span className="eyebrow">Veteranlar Ligi · 2026</span>
-          <h1>{title}</h1>
-          {description && <p>{description}</p>}
-        </section>
+        {showHero && (
+          <section className="site-hero">
+            <span className="eyebrow">Veteranlar Ligi · 2026</span>
+            <h1>{title}</h1>
+            {description && <p>{description}</p>}
+          </section>
+        )}
         {children}
       </main>
       <footer className="site-footer">

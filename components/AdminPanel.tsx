@@ -4,6 +4,7 @@ import {
   CalendarDays,
   Crosshair,
   FileBadge2,
+  Images,
   LayoutDashboard,
   LogOut,
   Plus,
@@ -18,6 +19,7 @@ import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
 import LeagueMetrics from "@/components/LeagueMetrics";
 import Modal from "@/components/Modal";
+import SiteMediaModule from "@/components/SiteMediaModule";
 import TeamBadge from "@/components/TeamBadge";
 import { LicenseFormModal, LicenseView } from "@/components/LicenseModule";
 import {
@@ -36,6 +38,8 @@ import type {
   Match,
   MatchGoal,
   PlayerLicense,
+  SiteBanner,
+  SiteSlide,
   Team
 } from "@/lib/types";
 
@@ -46,6 +50,7 @@ type AdminView =
   | "standings"
   | "scorers"
   | "fairplay"
+  | "media"
   | "licenses"
   | "accounts";
 
@@ -56,6 +61,7 @@ const NAV: Array<{ view: AdminView; label: string; icon: typeof LayoutDashboard 
   { view: "standings", label: "Puan Durumu", icon: TableProperties },
   { view: "scorers", label: "Gol Kralı", icon: Crosshair },
   { view: "fairplay", label: "Fair Play", icon: ShieldCheck },
+  { view: "media", label: "Slider & Banner", icon: Images },
   { view: "licenses", label: "Lisanslar", icon: FileBadge2 },
   { view: "accounts", label: "Takım Hesapları", icon: Trophy }
 ];
@@ -83,6 +89,8 @@ export default function AdminPanel() {
   const [goals, setGoals] = useState<MatchGoal[]>([]);
   const [cards, setCards] = useState<CardRecord[]>([]);
   const [licenses, setLicenses] = useState<PlayerLicense[]>([]);
+  const [slides, setSlides] = useState<SiteSlide[]>([]);
+  const [banners, setBanners] = useState<SiteBanner[]>([]);
   const [ready, setReady] = useState(false);
   const [toast, setToast] = useState("");
   const [teamModalOpen, setTeamModalOpen] = useState(false);
@@ -103,6 +111,8 @@ export default function AdminPanel() {
     setGoals(data.goals);
     setCards(data.cards);
     setLicenses(data.licenses);
+    setSlides(data.slides || []);
+    setBanners(data.banners || []);
   };
 
   const persist = async (data: LeagueData) => {
@@ -146,7 +156,15 @@ export default function AdminPanel() {
     [teams, matches, goals, cards]
   );
 
-  const currentData = (): LeagueData => ({ teams, matches, goals, cards, licenses });
+  const currentData = (): LeagueData => ({
+    teams,
+    matches,
+    goals,
+    cards,
+    licenses,
+    slides,
+    banners
+  });
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -173,6 +191,7 @@ export default function AdminPanel() {
     if (!window.confirm(`${team.name} silinsin mi? Bağlı maç/kart/lisanslar da silinir.`)) return;
     try {
       await persist({
+        ...currentData(),
         teams: teams.filter((item) => item.id !== team.id),
         matches: matches.filter(
           (match) => match.homeId !== team.id && match.awayId !== team.id
@@ -329,6 +348,40 @@ export default function AdminPanel() {
     } catch (error) {
       setToast(error instanceof Error ? error.message : "Silinemedi.");
     }
+  };
+
+  const saveSlide = async (slide: SiteSlide) => {
+    const exists = slides.some((item) => item.id === slide.id);
+    const nextSlides = exists
+      ? slides.map((item) => (item.id === slide.id ? slide : item))
+      : [...slides, slide];
+    await persist({ ...currentData(), slides: nextSlides });
+    setToast(exists ? "Slayt güncellendi." : "Slayt eklendi.");
+  };
+
+  const deleteSlide = async (id: string) => {
+    await persist({
+      ...currentData(),
+      slides: slides.filter((slide) => slide.id !== id)
+    });
+    setToast("Slayt silindi.");
+  };
+
+  const saveBanner = async (banner: SiteBanner) => {
+    const exists = banners.some((item) => item.id === banner.id);
+    const nextBanners = exists
+      ? banners.map((item) => (item.id === banner.id ? banner : item))
+      : [...banners, banner];
+    await persist({ ...currentData(), banners: nextBanners });
+    setToast(exists ? "Banner güncellendi." : "Banner eklendi.");
+  };
+
+  const deleteBanner = async (id: string) => {
+    await persist({
+      ...currentData(),
+      banners: banners.filter((banner) => banner.id !== id)
+    });
+    setToast("Banner silindi.");
   };
 
   const createTeamAccount = async (event: FormEvent) => {
@@ -667,6 +720,43 @@ export default function AdminPanel() {
               ))}
             </div>
           </section>
+        )}
+
+        {view === "media" && (
+          <SiteMediaModule
+            slides={slides}
+            banners={banners}
+            onSaveSlide={async (slide) => {
+              try {
+                await saveSlide(slide);
+              } catch (error) {
+                setToast(error instanceof Error ? error.message : "Kayıt başarısız.");
+                throw error;
+              }
+            }}
+            onDeleteSlide={async (id) => {
+              try {
+                await deleteSlide(id);
+              } catch (error) {
+                setToast(error instanceof Error ? error.message : "Silinemedi.");
+              }
+            }}
+            onSaveBanner={async (banner) => {
+              try {
+                await saveBanner(banner);
+              } catch (error) {
+                setToast(error instanceof Error ? error.message : "Kayıt başarısız.");
+                throw error;
+              }
+            }}
+            onDeleteBanner={async (id) => {
+              try {
+                await deleteBanner(id);
+              } catch (error) {
+                setToast(error instanceof Error ? error.message : "Silinemedi.");
+              }
+            }}
+          />
         )}
 
         {view === "licenses" && (

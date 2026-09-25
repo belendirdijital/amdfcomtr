@@ -2,37 +2,11 @@
 
 import { Download, Eye, FileBadge2, Plus, Trash2, Upload } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { resizeImage } from "@/lib/image";
 import type { PlayerLicense, Team } from "@/lib/types";
 import { saveLicensePdf } from "@/lib/licensePdf";
 import LicenseCard from "./LicenseCard";
 import Modal from "./Modal";
-
-function resizeImage(file: File, maxSize: number, useJpeg: boolean) {
-  return new Promise<string>((resolve, reject) => {
-    const image = new Image();
-    const objectUrl = URL.createObjectURL(file);
-    image.onload = () => {
-      const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.max(1, Math.round(image.width * scale));
-      canvas.height = Math.max(1, Math.round(image.height * scale));
-      const context = canvas.getContext("2d");
-      if (!context) {
-        URL.revokeObjectURL(objectUrl);
-        reject(new Error("Görsel işlenemedi."));
-        return;
-      }
-      context.drawImage(image, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(objectUrl);
-      resolve(canvas.toDataURL(useJpeg ? "image/jpeg" : "image/png", useJpeg ? 0.82 : undefined));
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      reject(new Error("Görsel okunamadı."));
-    };
-    image.src = objectUrl;
-  });
-}
 
 export function LicenseView({
   licenses,
