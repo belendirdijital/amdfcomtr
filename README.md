@@ -1,38 +1,65 @@
-# V3 Ajans Masaüstü Uygulaması
+# amdfcomtr — Veteranlar Ligi Web
 
-V3 Ajans'ın farklı iş alanlarının modüller halinde yönetilebilmesi için hazırlanan
-macOS ve Windows masaüstü uygulaması.
+Halka açık lig sitesi, admin paneli ve takım panelleri.
 
-İlk modül Veteranlar Ligi yönetimidir:
+## Hızlı başlangıç (Supabase olmadan)
 
-- Takım ekleme, düzenleme ve silme
-- Çift devre fikstür üretimi
-- Maç programı ve skor girişi
-- Sonuçlardan otomatik hesaplanan puan tablosu
-- Takım ve oyuncu bazlı sarı/kırmızı kart kaydı
-- Fair play sıralaması
-- Uygulama içinde kalıcı veri saklama ve JSON dışa aktarma
-
-## Geliştirme
+Supabase kurmadan hemen deneyebilirsin — veriler `data/store.json` dosyasında tutulur.
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Masaüstü paketleri
+Site: [http://localhost:3000](http://localhost:3000)  
+Giriş: [http://localhost:3000/login](http://localhost:3000/login)
 
-```bash
-npm run dist:mac
-npm run dist:win
+| Hesap | Giriş | Şifre |
+|-------|-------|-------|
+| Admin | `admin@amdf.local` | `admin123` |
+| Takım (AMDF Veteranlar) | `05551234567` | `takim123` |
+
+Admin ile giriş → fikstür üret, skor/gol gir, diğer takımlara hesap aç.  
+Takım hesabı ile giriş → sadece kendi oyuncu lisansları.
+
+## Production: Supabase
+
+Domain / canlı ortam için Supabase önerilir.
+
+1. [supabase.com](https://supabase.com) üzerinde proje oluştur
+2. SQL Editor’de [`supabase/migrations/001_init.sql`](supabase/migrations/001_init.sql) çalıştır
+3. `.env.example` → `.env.local` kopyala, API anahtarlarını doldur
+4. Auth → Users’tan admin kullanıcı ekle, sonra:
+
+```sql
+insert into public.profiles (id, role, team_id)
+values ('USER_UUID_BURAYA', 'admin', null)
+on conflict (id) do update set role = 'admin';
 ```
 
-Oluşturulan kurulum dosyaları `release/` klasörüne yazılır.
-
-## Kontroller
+`.env.local` doluysa uygulama otomatik Supabase moduna geçer.
 
 ```bash
-npm run lint
+cp .env.example .env.local
+npm run dev
+```
+
+### Deploy
+
+Vercel’e deploy et, env değişkenlerini ekle, domain bağla.  
+Supabase Auth → URL Configuration’a production URL’ini yaz.
+
+## Komutlar
+
+```bash
+npm run dev
 npm run build
-npm run test:desktop
+npm run start
+npm run lint
 ```
+
+## Notlar
+
+- Lisans (TC, foto) halka açık değildir; sadece admin + ilgili takım görür
+- Gol kralı, maçlara girilen oyuncu gollerinden hesaplanır
+- Yerel mod geliştirme / demo içindir; canlıda Supabase kullan

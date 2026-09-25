@@ -1,11 +1,12 @@
 .next
 dist
-.vinext
-dist-renderer
-release
 node_modules
 *.log
 *.tsbuildinfo
 .DS_Store
 .env*
 !.env.example
+release
+dist-renderer
+.vinext
+data/

@@ -12,7 +12,12 @@ export default function TeamBadge({
 }) {
   return (
     <div className={`team-badge team-badge--${size}`}>
-      <span className="team-mark" style={{ background: team.color }}>
+      <span
+        className="team-mark"
+        style={{
+          background: `linear-gradient(135deg, ${team.color} 0 50%, ${team.secondaryColor || team.color} 50% 100%)`
+        }}
+      >
         {initials(team.name)}
       </span>
       {showName && <span className="team-badge__name">{team.name}</span>}
