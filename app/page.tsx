@@ -26,13 +26,6 @@ export default async function HomePage() {
       title="Veteranlar Ligi"
       description="Puan durumu, fikstür, gol kralı ve fair play — canlı takip. Veriler yalnızca yönetim panelinden güncellenir."
     >
-      {!configured && (
-        <div className="site-panel" style={{ marginBottom: 18 }}>
-                    <strong>Kurulum:</strong> Şu an yerel moddasınız (Supabase yok).
-          Admin paneli çalışır; veriler sunucudaki <code>data/store.json</code> dosyasına yazılır.
-          Giriş: <code>admin@amdf.local</code> / <code>admin123</code>
-        </div>
-      )}
       {error && (
         <div className="site-panel" style={{ marginBottom: 18 }}>
           <strong>Veri hatası:</strong> {error}

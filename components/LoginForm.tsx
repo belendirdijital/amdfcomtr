@@ -54,20 +54,6 @@ export default function LoginForm() {
         </Link>
         <h1>Panele giriş</h1>
         <p>Admin e-posta, takım telefon numarası ile giriş yapar.</p>
-        <div
-          style={{
-            padding: 12,
-            borderRadius: 12,
-            background: "var(--paper)",
-            border: "1px solid var(--soft-line)",
-            fontSize: 13,
-            color: "var(--muted)"
-          }}
-        >
-          Yerel test — Admin: <strong>admin@amdf.local</strong> / <strong>admin123</strong>
-          <br />
-          Takım: <strong>05551234567</strong> / <strong>takim123</strong>
-        </div>
         <label className="form-field">
           <span>Telefon veya e-posta</span>
           <input
