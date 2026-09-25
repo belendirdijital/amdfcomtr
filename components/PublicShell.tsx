@@ -21,6 +21,17 @@ export default function PublicShell({
         </section>
         {children}
       </main>
+      <footer className="site-footer">
+        <div className="belendir-mark" aria-label="Belendir Dijital">
+          <span className="belendir-mark__badge" aria-hidden="true">
+            B
+          </span>
+          <span className="belendir-mark__text">
+            <strong>Belendir</strong>
+            <em>Dijital</em>
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }
