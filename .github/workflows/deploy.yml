@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: amdfcomtr-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Deploy to production VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.AMDF_DEPLOY_HOST }}
+          username: ${{ secrets.AMDF_DEPLOY_USER }}
+          key: ${{ secrets.AMDF_DEPLOY_SSH_KEY }}
+          # Sunucudaki deploy anahtarı force-command ile
+          # /usr/local/bin/amdfcomtr-deploy.sh çalıştırır.
+          script: echo "trigger deploy"
+          command_timeout: 15m
