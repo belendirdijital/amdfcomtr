@@ -333,6 +333,28 @@ export function matchIsPlayed(match: Match) {
   return match.homeScore !== null && match.awayScore !== null;
 }
 
+/**
+ * Tek sayıda takımlı ligde her hafta maçı olmayan takım bay geçer.
+ * `matches` tam fikstür olmalı; kısmi listeden hesaplanırsa yanlış takım bay görünür.
+ * Haftada birden fazla takım boştaysa (fikstür eksik girilmişse) o hafta için bay gösterilmez.
+ */
+export function getByeTeams(teams: Team[], matches: Match[]): Map<number, Team> {
+  const playingByRound = new Map<number, Set<string>>();
+  matches.forEach((match) => {
+    const playing = playingByRound.get(match.round) || new Set<string>();
+    playing.add(match.homeId);
+    playing.add(match.awayId);
+    playingByRound.set(match.round, playing);
+  });
+
+  const byes = new Map<number, Team>();
+  playingByRound.forEach((playing, round) => {
+    const idle = teams.filter((team) => !playing.has(team.id));
+    if (idle.length === 1) byes.set(round, idle[0]);
+  });
+  return byes;
+}
+
 export function createTeamShortName(name: string) {
   const words = name.trim().split(/\s+/).filter(Boolean);
   const shortName =

@@ -2,6 +2,7 @@
 
 import {
   CalendarDays,
+  Coffee,
   Crosshair,
   FileBadge2,
   Images,
@@ -13,7 +14,7 @@ import {
   Trophy,
   UsersRound
 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, Fragment, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
@@ -27,6 +28,7 @@ import {
   createTeamShortName,
   formatDate,
   generateFixtures,
+  getByeTeams,
   getCardTotals,
   getStandings,
   getTopScorers,
@@ -151,6 +153,14 @@ export default function AdminPanel() {
   const scorers = useMemo(() => getTopScorers(teams, goals), [teams, goals]);
   const fairPlay = useMemo(() => getCardTotals(teams, cards), [teams, cards]);
   const teamMap = useMemo(() => new Map(teams.map((team) => [team.id, team])), [teams]);
+  const byeTeams = useMemo(() => getByeTeams(teams, matches), [teams, matches]);
+  const sortedMatches = useMemo(
+    () =>
+      [...matches].sort(
+        (a, b) => a.round - b.round || a.date.localeCompare(b.date) || a.time.localeCompare(b.time)
+      ),
+    [matches]
+  );
   const overviewData = useMemo(
     () => ({ teams, matches, goals, cards }),
     [teams, matches, goals, cards]
@@ -530,65 +540,87 @@ export default function AdminPanel() {
               </div>
             )}
             <div className="fixture-stack">
-              {[...matches]
-                .sort((a, b) => a.round - b.round || a.date.localeCompare(b.date) || a.time.localeCompare(b.time))
-                .map((match) => {
+              {sortedMatches.map((match, index) => {
                 const home = teamMap.get(match.homeId);
                 const away = teamMap.get(match.awayId);
-                if (!home || !away) return null;
                 const played = matchIsPlayed(match);
+                const lastOfRound = sortedMatches[index + 1]?.round !== match.round;
+                const byeTeam = lastOfRound ? byeTeams.get(match.round) : undefined;
                 return (
-                  <article className="fixture-card" key={match.id}>
-                    <div className="fixture-card__round">
-                      <span>{match.round}. hafta</span>
-                      <strong>{formatDate(match.date)}</strong>
-                      <button
-                        className="button button--quiet"
-                        onClick={() => setGoalMatch(match)}
-                      >
-                        Goller
-                      </button>
-                    </div>
-                    <div className="fixture-card__matchup">
-                      <div className="fixture-team fixture-team--home">
-                        <TeamBadge team={home} size="sm" />
-                      </div>
-                      <strong className="fixture-score">
-                        {played ? `${match.homeScore} - ${match.awayScore}` : "vs"}
-                      </strong>
-                      <div className="fixture-team">
-                        <TeamBadge team={away} size="sm" />
-                      </div>
-                    </div>
-                    <div className="fixture-card__details fixture-card__details--readonly">
-                      <div className="fixture-detail">
-                        <span>Tarih</span>
-                        <strong>{formatDate(match.date)}</strong>
-                      </div>
-                      <div className="fixture-detail">
-                        <span>Saat</span>
-                        <strong>{match.time}</strong>
-                      </div>
-                      <div className="fixture-detail">
-                        <span>Saha</span>
-                        <strong>{match.venue}</strong>
-                      </div>
-                      <div className="fixture-card__actions">
-                        <button
-                          className="button button--primary"
-                          onClick={() => openEditMatch(match)}
-                        >
-                          Düzenle
-                        </button>
-                        <button
-                          className="button button--quiet"
-                          onClick={() => void deleteMatch(match)}
-                        >
-                          Sil
-                        </button>
-                      </div>
-                    </div>
-                  </article>
+                  <Fragment key={match.id}>
+                    {home && away && (
+                      <article className="fixture-card">
+                        <div className="fixture-card__round">
+                          <span>{match.round}. hafta</span>
+                          <strong>{formatDate(match.date)}</strong>
+                          <button
+                            className="button button--quiet"
+                            onClick={() => setGoalMatch(match)}
+                          >
+                            Goller
+                          </button>
+                        </div>
+                        <div className="fixture-card__matchup">
+                          <div className="fixture-team fixture-team--home">
+                            <TeamBadge team={home} size="sm" />
+                          </div>
+                          <strong className="fixture-score">
+                            {played ? `${match.homeScore} - ${match.awayScore}` : "vs"}
+                          </strong>
+                          <div className="fixture-team">
+                            <TeamBadge team={away} size="sm" />
+                          </div>
+                        </div>
+                        <div className="fixture-card__details fixture-card__details--readonly">
+                          <div className="fixture-detail">
+                            <span>Tarih</span>
+                            <strong>{formatDate(match.date)}</strong>
+                          </div>
+                          <div className="fixture-detail">
+                            <span>Saat</span>
+                            <strong>{match.time}</strong>
+                          </div>
+                          <div className="fixture-detail">
+                            <span>Saha</span>
+                            <strong>{match.venue}</strong>
+                          </div>
+                          <div className="fixture-card__actions">
+                            <button
+                              className="button button--primary"
+                              onClick={() => openEditMatch(match)}
+                            >
+                              Düzenle
+                            </button>
+                            <button
+                              className="button button--quiet"
+                              onClick={() => void deleteMatch(match)}
+                            >
+                              Sil
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    )}
+                    {byeTeam && (
+                      <article className="fixture-card fixture-card--bye">
+                        <div className="fixture-card__round">
+                          <span>{match.round}. hafta</span>
+                          <strong>Bay</strong>
+                        </div>
+                        <div className="bye-card__team">
+                          <span className="bye-card__icon">
+                            <Coffee size={20} />
+                          </span>
+                          <TeamBadge team={byeTeam} size="sm" />
+                        </div>
+                        <div className="bye-card__message">
+                          <span>BAY</span>
+                          <strong>Bu hafta maçı yok</strong>
+                          <p>Takım sayısı tek olduğu için her hafta bir takım bay geçer.</p>
+                        </div>
+                      </article>
+                    )}
+                  </Fragment>
                 );
               })}
             </div>

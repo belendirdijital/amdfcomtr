@@ -2007,7 +2007,7 @@ button.agency-module-card {
 
 .bye-card__message > span {
   color: var(--muted);
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.8px;
 }
@@ -2021,8 +2021,26 @@ button.agency-module-card {
 .bye-card__message p {
   margin: 0;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.45;
+}
+
+.fixture-bye {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.fixture-bye__tag {
+  flex: none;
+  padding: 4px 9px;
+  color: #fff;
+  background: var(--orange);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.6px;
 }
 
 .formula-note {
