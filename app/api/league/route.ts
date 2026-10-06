@@ -54,9 +54,13 @@ function normalizeLeagueData(raw: LeagueData): LeagueData {
 }
 
 export async function GET() {
+  // Licenses contain TC numbers and photos: only admins may receive them here.
+  const isAdmin = Boolean(await requireAdmin());
+
   if (!isSupabaseConfigured()) {
     const store = readLocalStore();
-    return NextResponse.json({ data: store.data, mode: "local" });
+    const data = isAdmin ? store.data : { ...store.data, licenses: [] };
+    return NextResponse.json({ data, mode: "local" });
   }
 
   const supabase = await createClient();
@@ -65,7 +69,9 @@ export async function GET() {
     supabase.from("matches").select("*").order("round").order("date"),
     supabase.from("match_goals").select("*"),
     supabase.from("cards").select("*").order("created_at", { ascending: false }),
-    supabase.from("licenses").select("*").order("created_at", { ascending: false }),
+    isAdmin
+      ? supabase.from("licenses").select("*").order("created_at", { ascending: false })
+      : Promise.resolve({ data: [], error: null }),
     supabase.from("site_slides").select("*").order("sort_order"),
     supabase.from("site_banners").select("*").order("sort_order")
   ]);

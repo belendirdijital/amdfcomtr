@@ -11,15 +11,19 @@ export async function loadPublicLeagueData(): Promise<{
   error?: string;
 }> {
   if (!isSupabaseConfigured()) {
-    return { data: readLocalStore().data, configured: false };
+    return { data: withoutLicenses(readLocalStore().data), configured: false };
   }
 
   try {
     const data = await getLeagueData();
-    return { data, configured: true };
+    return { data: withoutLicenses(data), configured: true };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Veriler yüklenemedi.";
-    return { data: readLocalStore().data, configured: true, error: message };
+    return { data: withoutLicenses(readLocalStore().data), configured: true, error: message };
   }
+}
+
+function withoutLicenses(data: LeagueData): LeagueData {
+  return { ...data, licenses: [] };
 }
