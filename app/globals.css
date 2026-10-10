@@ -1453,6 +1453,19 @@ button.agency-module-card {
   letter-spacing: -0.5px;
 }
 
+.team-mark--logo {
+  overflow: hidden;
+  background: #fff;
+}
+
+.team-mark--logo img {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 12%;
+  object-fit: contain;
+}
+
 .team-badge--sm .team-mark {
   width: 29px;
   height: 29px;
@@ -2028,6 +2041,7 @@ button.agency-module-card {
 .fixture-bye {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   min-width: 0;
 }
@@ -4097,11 +4111,25 @@ button.agency-module-card {
   text-align: center;
   font-size: 18px;
 }
-.fixture-card__meta-group {
+.fixture-card__meta > .fixture-card__meta-group {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 4px 14px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  max-width: 60%;
+  text-align: right;
+  white-space: normal;
+}
+.fixture-card__meta > .fixture-meta-item {
+  flex: none;
+}
+.fixture-card__meta-group .fixture-meta-item {
+  display: block;
+  white-space: normal;
+}
+.fixture-card__meta-group .fixture-meta-item svg {
+  margin-right: 5px;
+  vertical-align: -2px;
 }
 .fixture-meta-item {
   display: inline-flex;
@@ -4121,6 +4149,24 @@ button.agency-module-card {
 .fixture-card__side {
   display: flex;
   min-width: 0;
+}
+.fixture-card__side .team-mark,
+.fixture-bye .team-mark {
+  width: 52px;
+  height: 52px;
+  font-size: 12px;
+}
+.fixture-card__side .team-mark--logo img,
+.fixture-bye .team-mark--logo img {
+  padding: 8%;
+}
+@media (max-width: 640px) {
+  .fixture-card__side .team-mark,
+  .fixture-bye .team-mark {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+  }
 }
 .fixture-card__side--home {
   justify-content: flex-end;
@@ -4786,6 +4832,26 @@ button.agency-module-card {
   min-height: 36px;
   min-width: 36px;
   padding: 0 10px;
+}
+
+.team-logo-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.team-logo-field__note {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 10px 12px 10px 28px;
+  color: var(--muted);
+  background: #fafbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .site-media-admin__upload {

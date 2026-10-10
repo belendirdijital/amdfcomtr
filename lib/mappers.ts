@@ -18,6 +18,7 @@ type TeamRow = {
   secondary_color: string;
   manager: string | null;
   contact_phone: string | null;
+  logo_url?: string | null;
 };
 
 type MatchRow = {
@@ -111,7 +112,8 @@ export function mapTeam(row: TeamRow): Team {
     color: row.color,
     secondaryColor: row.secondary_color,
     manager: row.manager || "",
-    contactPhone: row.contact_phone || ""
+    contactPhone: row.contact_phone || "",
+    logoUrl: row.logo_url || ""
   };
 }
 
@@ -123,7 +125,10 @@ export function toTeamRow(team: Team) {
     color: team.color,
     secondary_color: team.secondaryColor,
     manager: team.manager || "",
-    contact_phone: team.contactPhone || ""
+    contact_phone: team.contactPhone || "",
+    // Admin kaydı takımları silip yeniden ekliyor; logo_url kolonu yoksa
+    // (migration 003 çalışmadıysa) logosuz kayıtlar yine de başarılı olsun.
+    ...(team.logoUrl ? { logo_url: team.logoUrl } : {})
   };
 }
 

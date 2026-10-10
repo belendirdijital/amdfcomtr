@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   TableProperties,
   Trophy,
+  Upload,
   UsersRound
 } from "lucide-react";
 import { FormEvent, Fragment, useEffect, useMemo, useState } from "react";
@@ -23,6 +24,7 @@ import Modal from "@/components/Modal";
 import SiteMediaModule from "@/components/SiteMediaModule";
 import TeamBadge from "@/components/TeamBadge";
 import { LicenseFormModal, LicenseView } from "@/components/LicenseModule";
+import { resizeImage } from "@/lib/image";
 import {
   TEAM_COLORS,
   createTeamShortName,
@@ -1101,12 +1103,16 @@ function TeamFormModal({
   const [contactPhone, setContactPhone] = useState("");
   const [color, setColor] = useState(TEAM_COLORS[0]);
   const [secondaryColor, setSecondaryColor] = useState(TEAM_COLORS[1]);
+  const [logoUrl, setLogoUrl] = useState("");
+  const [logoError, setLogoError] = useState("");
 
   useEffect(() => {
     if (!open) return;
     setName(team?.name || "");
     setManager(team?.manager || "");
     setContactPhone(team?.contactPhone || "");
+    setLogoUrl(team?.logoUrl || "");
+    setLogoError("");
     setColor(team?.color || TEAM_COLORS[teamCount % TEAM_COLORS.length]);
     setSecondaryColor(
       team?.secondaryColor || TEAM_COLORS[(teamCount + 1) % TEAM_COLORS.length]
@@ -1131,7 +1137,8 @@ function TeamFormModal({
             color,
             secondaryColor,
             manager: manager.trim(),
-            contactPhone: contactPhone.trim()
+            contactPhone: contactPhone.trim(),
+            logoUrl
           });
         }}
       >
@@ -1163,6 +1170,61 @@ function TeamFormModal({
               onChange={(event) => setSecondaryColor(event.target.value)}
             />
           </label>
+        </div>
+        <div className="form-field">
+          <span>Logo</span>
+          <div className="team-logo-field">
+            <TeamBadge
+              team={{
+                id: team?.id || "preview",
+                name: name || "Takım",
+                shortName: "",
+                color,
+                secondaryColor,
+                logoUrl
+              }}
+              size="lg"
+              showName={false}
+            />
+            <label className="button button--quiet">
+              <Upload size={16} />
+              {logoUrl ? "Logoyu değiştir" : "Logo yükle"}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                hidden
+                onChange={async (event) => {
+                  const file = event.target.files?.[0];
+                  event.target.value = "";
+                  if (!file) return;
+                  try {
+                    setLogoUrl(await resizeImage(file, 160, false));
+                    setLogoError("");
+                  } catch {
+                    setLogoError("Logo okunamadı. PNG veya JPG deneyin.");
+                  }
+                }}
+              />
+            </label>
+            {logoUrl && (
+              <button
+                type="button"
+                className="button button--quiet"
+                onClick={() => setLogoUrl("")}
+              >
+                Logoyu kaldır
+              </button>
+            )}
+          </div>
+          <ul className="team-logo-field__note">
+            <li>Ölçü: kare (1:1), en az 300 × 300 px (önerilen 500 × 500 px).</li>
+            <li>Format: şeffaf arka planlı PNG önerilir; JPG ve WEBP de kabul edilir.</li>
+            <li>Logo görselin ortasında olmalı, kenarlarda fazla boşluk bırakılmamalı.</li>
+            <li>Sitede yuvarlak çerçevede gösterilir; yuvarlak veya arma tipi logolar en iyi sonucu verir.</li>
+            <li>Yüklenen görsel otomatik küçültülür, dosya boyutu sınırı yoktur.</li>
+            <li>Logo yüklenmezse takım renkleriyle baş harf rozeti gösterilir.</li>
+          </ul>
+          {logoError && <p className="form-error">{logoError}</p>}
         </div>
         <div className="form-actions">
           <button type="button" className="button button--quiet" onClick={onClose}>

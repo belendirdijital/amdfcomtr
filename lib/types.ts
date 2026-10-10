@@ -8,6 +8,8 @@ export type Team = {
   secondaryColor: string;
   manager?: string;
   contactPhone?: string;
+  /** Data URL (PNG); boşsa renk + baş harf rozeti gösterilir */
+  logoUrl?: string;
 };
 
 export type Match = {
