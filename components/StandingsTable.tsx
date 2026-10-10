@@ -25,8 +25,8 @@ export default function StandingsTable({
             <th>G</th>
             <th>B</th>
             <th>M</th>
-            <th>AG</th>
-            <th>YG</th>
+            <th className="col-optional">AG</th>
+            <th className="col-optional">YG</th>
             <th>AV</th>
             <th>P</th>
           </tr>
@@ -42,8 +42,8 @@ export default function StandingsTable({
               <td>{row.won}</td>
               <td>{row.drawn}</td>
               <td>{row.lost}</td>
-              <td>{row.gf}</td>
-              <td>{row.ga}</td>
+              <td className="col-optional">{row.gf}</td>
+              <td className="col-optional">{row.ga}</td>
               <td>{row.gd}</td>
               <td>
                 <strong>{row.points}</strong>
