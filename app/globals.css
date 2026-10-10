@@ -4097,6 +4097,77 @@ button.agency-module-card {
   text-align: center;
   font-size: 18px;
 }
+.fixture-card__meta-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 14px;
+}
+.fixture-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.fixture-meta-item svg {
+  flex: none;
+  color: var(--orange);
+}
+.fixture-meta-item em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--ink);
+}
+.fixture-card__side {
+  display: flex;
+  min-width: 0;
+}
+.fixture-card__side--home {
+  justify-content: flex-end;
+}
+.fixture-card__side--home .team-badge {
+  flex-direction: row-reverse;
+}
+.fixture-card__side--home .team-badge__name {
+  text-align: right;
+}
+.fixture-card__goals {
+  align-items: start;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+.fixture-score--spacer {
+  display: block;
+}
+.fixture-scorers {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.fixture-scorers--home {
+  text-align: right;
+}
+.fixture-scorers li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fixture-scorers__ball {
+  margin-right: 4px;
+  font-size: 10px;
+}
+.fixture-scorers__minute {
+  margin-left: 4px;
+  color: var(--orange);
+  font-weight: 750;
+}
 .content-section > .panel-heading {
   display: flex;
   align-items: center;

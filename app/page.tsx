@@ -61,7 +61,12 @@ export default async function HomePage() {
             <h2>Yaklaşan maçlar</h2>
             <Link href="/fixtures">Fikstür</Link>
           </div>
-          <FixturesList matches={upcoming} allMatches={data.matches} teams={data.teams} />
+          <FixturesList
+            matches={upcoming}
+            allMatches={data.matches}
+            teams={data.teams}
+            goals={data.goals}
+          />
         </section>
         <section className="site-panel">
           <div className="panel-heading">

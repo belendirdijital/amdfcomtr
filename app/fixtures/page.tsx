@@ -16,7 +16,7 @@ export default async function FixturesPage() {
     >
       <LeagueMetrics data={data} className="metric-grid--page" />
       <section className="site-panel">
-        <FixturesList matches={data.matches} teams={data.teams} />
+        <FixturesList matches={data.matches} teams={data.teams} goals={data.goals} />
       </section>
     </PublicShell>
   );
